@@ -30,11 +30,12 @@ jobs:
 
       - name: Build docs step
         run: |-
-          echo "PWD: `pwd`"
-          echo "ls -l docs/status :"
-          ls -l 'docs/status'
-          if [ -r 'docs/status' ]; then
-            exit $(tail -1 'docs/status')
+          PWD=$(pwd)
+          echo "PWD: ${PWD}"
+          echo "ls -l ${PWD}/docs/status :"
+          ls -l "${PWD}/docs/status"
+          if [ -r "${PWD}/docs/status" ]; then
+            exit $(tail -1 "${PWD}/docs/status")
           else
             exit 1
           fi
