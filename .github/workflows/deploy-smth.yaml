@@ -30,6 +30,9 @@ jobs:
 
       - name: Build docs step
         run: |-
+          echo "PWD: `pwd`"
+          echo "ls -l docs/status :"
+          ls -l 'docs/status'
           if [ -r 'docs/status' ]; then
             exit $(tail -1 'docs/status')
           else
