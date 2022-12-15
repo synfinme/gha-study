@@ -41,12 +41,12 @@ jobs:
           fi
 
       - name: Deploy docs step
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         run: |-
           echo "Deploying docs... Done"
 
       - name: Notify deploy status
-        #if: always() && ( github.event_name == 'push' || github.event_name == 'workflow_dispatch' )
-        if: always()
+        if: always() && ( github.event_name == 'push' || github.event_name == 'workflow_dispatch' )
         run: |-
           echo "Notifying about deploy status: ${{ job.status }}"
 
