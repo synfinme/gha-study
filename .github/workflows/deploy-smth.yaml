@@ -22,10 +22,27 @@ jobs:
   print_context:
     runs-on: ubuntu-latest
     steps:
-      - env:
+      - name: Dump github.event contents
+        env:
           EVENT_CONTEXT: ${{ toJSON(github.event) }}
-        run: |
+        run: |-
           echo "${EVENT_CONTEXT}"
+
+      - name: Build docs step
+        run: |-
+          if [ -r 'docs/status' ]; then
+            exit $(tail -1 'docs/status')
+          else
+            exit 1
+          fi
+
+      - name: Deploy docs step
+        run: |-
+          echo "Deploying docs... Done"
+
+      - name: Notify deploy status
+        run: |-
+          echo "Notifying about deploy status... Done"
 
 #jobs:
 #  dummy-job:
