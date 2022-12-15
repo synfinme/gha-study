@@ -51,10 +51,30 @@ jobs:
           echo "Notifying about deploy status: ${{ job.status }}"
           echo "  github.event_name: ${{ github.event_name }}"
 
-#jobs:
-#  dummy-job:
-#    name: Deploy something
-#    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Dump 
+      - name: Notify Slack - deploy failed
+        if: always() && ( github.event_name == 'push' || github.event_name == 'workflow_dispatch' ) && github.event_name != 'success'
+        uses: abinoda/slack-action@master
+        env:
+          SLACK_BOT_TOKEN: "xoxb-4537273800017-4548416033424-IDMYHktfhEEzDCtZeUtIOfEc"
+        with:
+          args: >-
+            {\"channel\":\"C04F02YCJ95\",\"attachments\":[
+            {\"color\":\"#ff0000\",\"blocks\":[
+            {\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"OSS Docs deploy fails on the latest master :bangbang:\"}},
+            {\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"_merged by_: *${{ github.actor }}*\"}},
+            {\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"<https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|View Action Run>\"}}
+            ]}]}
+
+      - name: Notify Slack - succeeded
+        if: always() && ( github.event_name == 'push' || github.event_name == 'workflow_dispatch' ) && github.event_name == 'success'
+        uses: abinoda/slack-action@master
+        env:
+          SLACK_BOT_TOKEN: "xoxb-4537273800017-4548416033424-IDMYHktfhEEzDCtZeUtIOfEc"
+        with:
+          args: >-
+            {\"channel\":\"C04F02YCJ95\",\"attachments\":[
+            {\"color\":\"#00ff00\",\"blocks\":[
+            {\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"OSS Docs deploy was successful :tada:\"}},
+            {\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"_merged by_: *${{ github.actor }}*\"}},
+            {\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"<https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|View Action Run>\"}}
+            ]}]}
