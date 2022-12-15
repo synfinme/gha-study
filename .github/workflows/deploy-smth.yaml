@@ -55,7 +55,7 @@ jobs:
         if: always() && ( github.event_name == 'push' || github.event_name == 'workflow_dispatch' ) && job.status != 'success'
         uses: abinoda/slack-action@master
         env:
-          SLACK_BOT_TOKEN: "xoxb-4537273800017-4548416033424-IDMYHktfhEEzDCtZeUtIOfEc"
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
         with:
           args: >-
             {\"channel\":\"C04F02YCJ95\",\"attachments\":[
@@ -69,7 +69,7 @@ jobs:
         if: always() && ( github.event_name == 'push' || github.event_name == 'workflow_dispatch' ) && job.status == 'success'
         uses: abinoda/slack-action@master
         env:
-          SLACK_BOT_TOKEN: "xoxb-4537273800017-4548416033424-IDMYHktfhEEzDCtZeUtIOfEc"
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
         with:
           args: >-
             {\"channel\":\"C04F02YCJ95\",\"attachments\":[
