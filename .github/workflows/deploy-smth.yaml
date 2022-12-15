@@ -41,6 +41,7 @@ jobs:
           echo "Deploying docs... Done"
 
       - name: Notify deploy status
+        if: always()
         run: |-
           echo "Notifying about deploy status... Done"
 
