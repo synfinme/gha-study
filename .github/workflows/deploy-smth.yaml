@@ -65,7 +65,7 @@ jobs:
             {\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"<https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|View Action Run>\"}}
             ]}]}
 
-      - name: Notify Slack - succeeded
+      - name: Notify Slack - deploy succeeded
         if: always() && ( github.event_name == 'push' || github.event_name == 'workflow_dispatch' ) && job.status == 'success'
         uses: abinoda/slack-action@master
         env:
