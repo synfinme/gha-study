@@ -22,6 +22,9 @@ jobs:
   print_context:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Dump github.event contents
         env:
           EVENT_CONTEXT: ${{ toJSON(github.event) }}
@@ -30,8 +33,10 @@ jobs:
 
       - name: Build docs step
         run: |-
+          set -x
           PWD=$(pwd)
           echo "PWD: ${PWD}"
+          ls -laR "${PWD}"
           echo "ls -l ${PWD}/docs/status :"
           ls -l "${PWD}/docs/status"
           if [ -r "${PWD}/docs/status" ]; then
