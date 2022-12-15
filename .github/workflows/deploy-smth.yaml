@@ -22,6 +22,9 @@ jobs:
   print_context:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Dump github.event contents
         env:
           EVENT_CONTEXT: ${{ toJSON(github.event) }}
@@ -30,19 +33,23 @@ jobs:
 
       - name: Build docs step
         run: |-
-          if [ -r 'docs/status' ]; then
-            exit $(tail -1 'docs/status')
+          PWD=$(pwd)
+          if [ -r "${PWD}/docs/status" ]; then
+            exit $(tail -1 "${PWD}/docs/status")
           else
             exit 1
           fi
 
       - name: Deploy docs step
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         run: |-
           echo "Deploying docs... Done"
 
       - name: Notify deploy status
+        if: always() && ( github.event_name == 'push' || github.event_name == 'workflow_dispatch' )
         run: |-
-          echo "Notifying about deploy status... Done"
+          echo "Notifying about deploy status: ${{ job.status }}"
+          echo "  github.event_name: ${{ github.event_name }}"
 
 #jobs:
 #  dummy-job:
