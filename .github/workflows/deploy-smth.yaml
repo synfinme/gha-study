@@ -4,10 +4,19 @@ on:
   push:
     branches:
       - master
-    #paths:
-    #  - "docs/**"
+    paths:
+      - "docs/**"
+
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    paths:
+      - "docs/**"
 
   workflow_dispatch:
+
 
 jobs:
   print_context:
