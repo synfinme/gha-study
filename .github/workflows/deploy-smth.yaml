@@ -46,10 +46,16 @@ jobs:
           echo "Deploying docs... Done"
 
       - name: Notify deploy status
-        if: always() && ( github.event_name == 'push' || github.event_name == 'workflow_dispatch' )
+        #if: always() && ( github.event_name == 'push' || github.event_name == 'workflow_dispatch' )
+        if: always()
         run: |-
+          export SKIP_DEPLOY="no"
+          if [ "${{github.event_name}}" = "pull_request" ]; then
+              export SKIP_DEPLOY="yes"
+          fi
           echo "Notifying about deploy status: ${{ job.status }}"
           echo "  github.event_name: ${{ github.event_name }}"
+          echo "  SKIP_DEPLOY: ${SKIP_DEPLOY}"
 
       - name: Notify Slack - deploy failed
         if: always() && ( github.event_name == 'push' || github.event_name == 'workflow_dispatch' ) && job.status != 'success'
